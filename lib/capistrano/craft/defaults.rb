@@ -2,8 +2,12 @@
 # Craft CMS defaults
 #
 
+append :linked_dirs, "vendor", "storage"
+
 set :config_path, "config"
 set :php, "php"
+
+set :assets_path, "web/uploads"
 
 set :craft_local_env, -> { "#{Dir.pwd}/.env" }
 set :craft_remote_env, -> { "#{fetch(:deploy_to)}/shared/.env" }
@@ -13,7 +17,7 @@ set :craft_local_backups, "backups"
 set :craft_remote_backups, "shared/backups"
 
 # assets
-set :craft_compile_assets, "npm run production --production --silent"
+set :craft_compile_assets, "production --quiet"
 
 # console
 set :craft_console_path, -> { "craft" }

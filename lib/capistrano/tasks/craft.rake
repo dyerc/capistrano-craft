@@ -3,17 +3,16 @@ namespace :craft do
   desc "Ensure folder permissions are correct"
   task :set_permissions do
     on release_roles(fetch(:craft_deploy_roles)) do
-      within release_path do
-        # https://docs.craftcms.com/v3/installation.html#step-2-set-the-file-permissions
+      # https://docs.craftcms.com/v3/installation.html#step-2-set-the-file-permissions
 
-        execute "chmod 744 .env"
-        execute "chmod 744 composer.json"
-        execute "chmod 744 composer.lock"
-        execute "chmod 744 config/license.key"
-        execute "chmod -R 744 storage/*"
-        execute "chmod -R 744 vendor/*"
-        execute "chmod -R 744 web/cpresources/*"
-      end
+      # Attempt to chmod but don't fail if these aren't setup
+      execute "chmod -f 744 #{fetch(:craft_remote_env)} || true"
+      execute "chmod -f 744 #{release_path}/composer.json || true"
+      execute "chmod -f 744 #{release_path}/composer.lock || true"
+      execute "chmod -f 744 #{release_path}/config/license.key || true"
+      execute "chmod -fR 744 #{release_path}/storage/* || true"
+      execute "chmod -fR 744 #{release_path}/vendor/* || true"
+      execute "chmod -fR 744 #{release_path}/web/cpresources/* || true"
     end
   end
 
@@ -29,10 +28,10 @@ namespace :craft do
     desc "Synchronise assets between local and remote server"
     task :sync do
       run_locally do
-        on release_roles(fetch(:craft_deploy_roles)) do
+        release_roles(fetch(:craft_deploy_roles)).each do |role|
           puts "User -> " + role.user
-          execute :rsync, "-vzO #{role.user}@#{role.hostname}:#{shared_path}/web/assets/ web/assets"
-          execute :rsync, "-vzO web/assets/ #{role.user}@#{role.hostname}:#{shared_path}/web/assets"
+          execute :rsync, "-rvzO #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}/ #{fetch(:assets_path)}"
+          execute :rsync, "-rvzO #{fetch(:assets_path)}/ #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}"
         end
       end
     end

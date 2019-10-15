@@ -7,8 +7,8 @@ namespace :deploy do
   task :compile_assets do
     on release_roles(fetch(:craft_deploy_roles)) do
       within release_path do
-        execute :npm, "install", "--production", "--silent"
-        execute fetch(:craft_compile_assets)
+        execute :npm, "install", "--silent"
+        execute :npm, "run", fetch(:craft_compile_assets)
       end
     end
   end
