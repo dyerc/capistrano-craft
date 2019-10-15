@@ -2,6 +2,7 @@ require "capistrano/dsl/craft"
 self.extend Capistrano::DSL::Craft
 
 SSHKit::Backend::Netssh.send(:include, Capistrano::DSL::Craft)
+SSHKit::Backend::Local.send(:include, Capistrano::DSL::Craft)
 
 require "capistrano/composer"
 require "capistrano/craft/craft"

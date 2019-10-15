@@ -15,7 +15,37 @@ module Capistrano
         end
       end
 
+      def confirm(question)
+        set :confirmed, proc {
+          puts <<-EOF
+
+  ************************** WARNING ***************************
+  #{question}
+  **************************************************************
+
+          EOF
+          ask :answer, "y/N"
+          if fetch(:answer).strip == 'y' then true else false end
+        }.call
+
+        unless fetch(:confirmed)
+          exit
+        end
+      end
+
       # Database
+
+      def backup_file_name
+        now = Time.now
+        backup_date = [now.year, now.strftime("%m"), now.strftime("%d")]
+        backup_time = [now.strftime("%H"), now.strftime("%M"), now.strftime("%S")]
+
+        unless Dir.exist?(fetch(:craft_local_backups))
+          Dir.mkdir(fetch(:craft_local_backups))
+        end
+
+        File.join(fetch(:craft_local_backups), "#{backup_date.join('-')}_#{backup_time.join('-')}.sql")
+      end
 
       def postgres_dump(env, output)
         execute SSHKit::Command.new <<-EOCOMMAND
