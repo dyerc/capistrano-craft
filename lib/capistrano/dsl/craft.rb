@@ -24,7 +24,49 @@ module Capistrano
         EOCOMMAND
       end
 
-      def postgres_restore()
+      def mysql_dump(env, output)
+      end
+
+      def postgres_restore(env, input)
+        execute SSHKit::Command.new <<-EOCOMMAND
+          source "#{env}"
+          PGPASSWORD=$DB_PASSWORD dropdb -U $DB_USER -h $DB_SERVER -p $DB_PORT $DB_DATABASE
+          PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER -h $DB_SERVER -p $DB_PORT $DB_DATABASE
+          PGPASSWORD=$DB_PASSWORD psql -U $DB_USER -d $DB_DATABASE -h $DB_SERVER -p $DB_PORT -q < "#{input}"
+        EOCOMMAND
+      end
+
+      def mysql_restore(env, input)
+      end
+
+      def craft_database(env)
+        driver = capture SSHKit::Command.new <<-EOCOMMAND
+          source "#{env}"
+          echo $DB_DRIVER
+        EOCOMMAND
+
+        case driver.strip
+        when "pgsql" then return :pgsql
+        when "mysql" then return :mysql
+        else
+          raise "Unable to determine remote server database driver"
+        end
+      end
+
+      def database_dump(env, input)
+        if craft_database(env) == :pgsql
+          postgres_dump(env, input)
+        else
+          mysql_dump(env, input)
+        end
+      end
+
+      def database_restore(env, input)
+        if craft_database(env) == :pgsql
+          postgres_restore(env, input)
+        else
+          mysql_restore(env, input)
+        end
       end
     end
   end

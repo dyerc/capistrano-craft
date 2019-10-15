@@ -1,5 +1,10 @@
 namespace :craft do
 
+  desc "Ensure folder permissions are correct"
+  task :set_permissions do
+
+  end
+
   namespace :cache do
     task :clear do
       on release_roles(fetch(:craft_deploy_roles)) do
