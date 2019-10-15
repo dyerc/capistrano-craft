@@ -1,0 +1,1 @@
+load File.expand_path("../../tasks/craft.rake", __FILE__)
