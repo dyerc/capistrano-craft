@@ -79,7 +79,7 @@ module Capistrano
         when "pgsql" then return :pgsql
         when "mysql" then return :mysql
         else
-          raise "Unable to determine remote server database driver"
+          raise "Unable to determine database driver: \"#{driver.strip}\""
         end
       end
 

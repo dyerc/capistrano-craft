@@ -17,7 +17,8 @@ namespace :craft do
   end
 
   namespace :cache do
-    task :clear do
+    desc "Run the cache/flush Craft command"
+    task :flush do
       on release_roles(fetch(:craft_deploy_roles)) do
         craft_console "cache/flush"
       end
@@ -29,9 +30,8 @@ namespace :craft do
     task :sync do
       run_locally do
         release_roles(fetch(:craft_deploy_roles)).each do |role|
-          puts "User -> " + role.user
-          execute :rsync, "-rvzO #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}/ #{fetch(:assets_path)}"
-          execute :rsync, "-rvzO #{fetch(:assets_path)}/ #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}"
+          execute :rsync, "-rzO #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}/ #{fetch(:assets_path)}"
+          execute :rsync, "-rzO #{fetch(:assets_path)}/ #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}"
         end
       end
     end
@@ -40,12 +40,13 @@ namespace :craft do
   desc "Pull database and sync assets"
 	task :pull do
 		invoke "db:pull"
-		invoke "craft:sync_assets"
+		invoke "craft:assets:sync"
 	end
 
 	desc "Push database and sync assets"
 	task :push do
 		invoke "db:push"
-		invoke "craft:sync_assets"
-	end
+		invoke "craft:assets:sync"
+  end
+  
 end

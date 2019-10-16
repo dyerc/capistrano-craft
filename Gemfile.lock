@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    capistrano-craft (0.1.1)
+    capistrano-craft (0.1.2)
       capistrano (~> 3.1)
       capistrano-composer (~> 0.0.6)
 

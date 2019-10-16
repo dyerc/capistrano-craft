@@ -1,13 +1,13 @@
 namespace :db do
   namespace :local do
-    desc "Export the local database to craft_local_db_dump (db.sql)"
+    desc "Export the local database (to db.sql by default)"
     task :backup do
       run_locally do
         database_dump(fetch(:craft_local_env), fetch(:craft_local_db_dump))
       end
     end
 
-    desc "Import into the local database from craft_local_db_dump (db.sql)"
+    desc "Import into the local database (from db.sql by default)"
     task :import do
       run_locally do
         database_restore(fetch(:craft_local_env), fetch(:craft_local_db_dump))
@@ -35,7 +35,7 @@ namespace :db do
   task :pull do
     invoke 'db:backup'
 
-    on release_roles(fetch(:craft_deploy_roles)) do
+    run_locally do
       database_restore(fetch(:craft_local_env), fetch(:backup_filename))
     end
   end
