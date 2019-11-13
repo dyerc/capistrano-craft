@@ -26,7 +26,7 @@ namespace :db do
       download! remote_backup_file, local_backup_file
 
       # Remove temp file
-      execute "rm #{backup_file}"
+      execute "rm #{remote_backup_file}"
 
       set :backup_filename, local_backup_file
     end
