@@ -17,7 +17,7 @@ set :craft_local_backups, "backups"
 set :craft_remote_backups, "shared/backups"
 
 # assets
-set :craft_compile_assets, "production --quiet"
+set :craft_compile_assets, "production"
 
 # console
 set :craft_console_path, -> { "craft" }

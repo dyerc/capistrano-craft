@@ -19,15 +19,16 @@ namespace :db do
   task :backup do
     on release_roles(fetch(:craft_deploy_roles)) do
       # Export remote dump file
-      backup_file = "#{fetch(:deploy_to)}/shared/db.sql"
-      database_dump(fetch(:craft_remote_env), backup_file)
+      remote_backup_file = "#{fetch(:deploy_to)}/shared/db.sql"
+      database_dump(fetch(:craft_remote_env), remote_backup_file)
 
-      download! backup_file, backup_file_name
+      local_backup_file = backup_file_name
+      download! remote_backup_file, local_backup_file
 
       # Remove temp file
       execute "rm #{backup_file}"
 
-      set :backup_filename, backup_file_name
+      set :backup_filename, local_backup_file
     end
   end
 

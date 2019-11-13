@@ -17,10 +17,11 @@ namespace :craft do
   end
 
   namespace :cache do
-    desc "Run the cache/flush Craft command"
-    task :flush do
+    desc "Run the clear-caches/all Craft command"
+    task :clear do
       on release_roles(fetch(:craft_deploy_roles)) do
-        craft_console "cache/flush"
+        craft_console "cache/flush-all"
+        craft_console "clear-caches/all"
       end
     end
   end
@@ -35,6 +36,13 @@ namespace :craft do
         end
       end
     end
+
+    desc "Re-indexes assets across all volumes"
+    task :reindex do
+      on release_roles(fetch(:craft_deploy_roles)) do
+        craft_console "index-assets/all"
+      end
+    end
   end
 
   desc "Pull database and sync assets"
@@ -46,7 +54,8 @@ namespace :craft do
 	desc "Push database and sync assets"
 	task :push do
 		invoke "db:push"
-		invoke "craft:assets:sync"
+    invoke "craft:assets:sync"
+    invoke "craft:assets:reindex"
   end
   
 end
