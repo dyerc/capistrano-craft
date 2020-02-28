@@ -5,10 +5,11 @@ namespace :deploy do
 
   desc 'Compile assets'
   task :compile_assets do
-    on release_roles(fetch(:craft_deploy_roles)) do
-      within release_path do
-        execute :yarn, "install"
-        execute :yarn, "run", fetch(:craft_compile_assets)
+    if fetch(:craft_compile_assets)
+      on release_roles(fetch(:craft_deploy_roles)) do
+        within release_path do
+          execute fetch(:craft_compile_assets_command)
+        end
       end
     end
   end

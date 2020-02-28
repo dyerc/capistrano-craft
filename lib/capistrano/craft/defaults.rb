@@ -17,7 +17,8 @@ set :craft_local_backups, "backups"
 set :craft_remote_backups, "shared/backups"
 
 # assets
-set :craft_compile_assets, "production"
+set :craft_compile_assets, true
+set :craft_compile_assets_command, "yarn install && yarn run production"
 
 # console
 set :craft_console_path, -> { "craft" }
