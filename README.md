@@ -1,7 +1,5 @@
 # Capistrano::Craft
 
-As of November 2019 this is very still very much under development. Please make sure you have appropriate backups to avoid any potential data loss.
-
 This gem automates the deployment of Craft CMS apps with Capistrano. It will automatically detect local and remote environment settings to make synchronizing of database and assets straightforward.
 
 ## Installation
@@ -21,7 +19,8 @@ Or install system wide:
 The setting you will likely need to customize is:
 ```
 # This should be your command to compile assets for production
-set :craft_compile_assets, "npm run production --production --silent"
+set :craft_compile_assets, true
+set :craft_compile_assets_command, "npm install && npm run production --production --silent"
 ```
 
 If you are using PHP-FPM it is necessary to restart it after deployment. Currently capistrano-craft doesn't handle this for you and you may need to add something along the lines of the following to your `deploy.rb` file.
@@ -38,7 +37,7 @@ end
 
 ### Compiling Assets
 
-Change `:craft_compile_assets` to be your production asset compilation command. By default, it is assumed your project has a `package.json` file and  `npm install` will be run first. The default asset compilcation command is `npm run production --production --silent`
+Change `:craft_compile_assets_command` to be your production asset compilation command. By default, it is assumed your project has a `package.json` file and  `npm install` will be run first. The default asset compilcation command is `npm run production --production --silent`. You can disable asset compilation altogether by settng `:craft_compile_assets` to `false`.
 
 ### Synchronize Database
 
@@ -65,7 +64,8 @@ set :craft_local_backups, "backups"
 set :craft_remote_backups, "shared/backups"
 
 # assets
-set :craft_compile_assets, "npm run production --production --silent"
+set :craft_compile_assets, true                                      
+set :craft_compile_assets_command, "yarn install && yarn run production"
 
 # console
 set :craft_console_path, -> { "craft" }
