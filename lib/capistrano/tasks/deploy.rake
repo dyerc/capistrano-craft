@@ -8,7 +8,7 @@ namespace :deploy do
     if fetch(:craft_compile_assets)
       on release_roles(fetch(:craft_deploy_roles)) do
         within release_path do
-          execute fetch(:craft_compile_assets_command)
+          execute "cd #{release_path} && #{fetch(:craft_compile_assets_command)}"
         end
       end
     end
