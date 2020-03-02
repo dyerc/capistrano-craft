@@ -2,6 +2,9 @@
 
 This gem automates the deployment of Craft CMS apps with Capistrano. It will automatically detect local and remote environment settings to make synchronizing of database and assets straightforward.
 
+- [x] Support for PostgreSQL databases
+- [ ] Support for MySQL databases
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -15,6 +18,8 @@ Or install system wide:
     $ gem install capistrano-craft
 
 ## Usage
+
+For a beginners guide to deploying your site (especially useful if you have little to no experience with Ruby) please see this blog article: [https://cdyer.co.uk/blog/deploying-craft-cms-to-a-vps-server-with-capistrano](https://cdyer.co.uk/blog/deploying-craft-cms-to-a-vps-server-with-capistrano)
 
 The setting you will likely need to customize is:
 ```
