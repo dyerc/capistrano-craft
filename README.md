@@ -20,7 +20,7 @@ Or install system wide:
 
 ## Usage
 
-For a beginners guide to deploying your site (especially useful if you have little to no experience with Ruby) please see this blog article: <a href="https://cdyer.co.uk/blog/deploying-craft-cms-to-a-vps-server-with-capistrano">https://cdyer.co.uk/blog/deploying-craft-cms-to-a-vps-server-with-capistrano</a>
+For a beginners guide to deploying your site (especially useful if you have little to no experience with Ruby) please see this blog article: https://cdyer.co.uk/blog/deploying-craft-cms-to-a-vps-server-with-capistrano
 
 The setting you will likely need to customize is:
 ```
