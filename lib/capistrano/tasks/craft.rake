@@ -26,6 +26,16 @@ namespace :craft do
     end
   end
 
+  namespace :config do
+    desc "Apply the project config to database after running Craft backup command"
+    task :apply do
+      on release_roles(fetch(:craft_deploy_roles)) do
+        craft_console "backup/db"
+        craft_console "project-config/apply"
+      end
+    end
+  end
+
   namespace :assets do
     desc "Synchronise assets between local and remote server"
     task :sync do
