@@ -15,6 +15,6 @@ namespace :deploy do
   end
 
   after 'deploy:updated', 'deploy:compile_assets'
-  after 'deploy:finished', 'craft:config:apply'
+  before 'deploy:published', 'craft:config:apply'
   after 'deploy:finished', 'craft:cache:clear'
 end
