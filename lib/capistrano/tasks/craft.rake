@@ -31,7 +31,9 @@ namespace :craft do
     task :apply do
       on release_roles(fetch(:craft_deploy_roles)) do
         craft_console "backup/db"
+        craft_console "migrate/all --no-content"
         craft_console "project-config/apply"
+        craft_console "migrate"
       end
     end
   end
