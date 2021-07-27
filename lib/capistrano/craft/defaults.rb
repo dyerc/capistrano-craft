@@ -2,7 +2,12 @@
 # Craft CMS defaults
 #
 
-append :linked_dirs, "vendor", "storage"
+append :linked_dirs, "vendor", 
+  "storage/backups", 
+  "storage/composer-backups", 
+  "storage/config-backups", 
+  "storage/logs", 
+  "storage/runtime"
 
 set :config_path, "config"
 set :php, "php"
