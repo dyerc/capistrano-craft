@@ -41,9 +41,23 @@ namespace :craft do
   namespace :assets do
     desc "Synchronise assets between local and remote server"
     task :sync do
+      invoke "craft:assets:pull"
+      invoke "craft:assets:push"
+    end
+
+    desc "Download all assets from the remote server"
+    task :pull do
       run_locally do
         release_roles(fetch(:craft_deploy_roles)).each do |role|
           execute :rsync, "-rzO #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}/ #{fetch(:assets_path)}"
+        end
+      end
+    end
+
+    desc "Upload all assets to the remote server"
+    task :push do
+      run_locally do
+        release_roles(fetch(:craft_deploy_roles)).each do |role|
           execute :rsync, "-rzO #{fetch(:assets_path)}/ #{role.user}@#{role.hostname}:#{shared_path}/#{fetch(:assets_path)}"
         end
       end
@@ -60,13 +74,13 @@ namespace :craft do
   desc "Pull database and sync assets"
 	task :pull do
 		invoke "db:pull"
-		invoke "craft:assets:sync"
+		invoke "craft:assets:pull"
 	end
 
 	desc "Push database and sync assets"
 	task :push do
 		invoke "db:push"
-    invoke "craft:assets:sync"
+    invoke "craft:assets:push"
     invoke "craft:assets:reindex"
   end
   

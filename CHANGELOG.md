@@ -1,5 +1,9 @@
 # Release Notes for Capistrano Craft
 
+## 0.3.4 - 2021-10-28
+
+- Separate out asset sync into two sub-commands push and pull.
+
 ## 0.3.0 - 2020-08-13
 
 - Better compatibility with Craft 3.5
