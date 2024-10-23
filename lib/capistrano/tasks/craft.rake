@@ -30,7 +30,7 @@ namespace :craft do
     desc "Apply the project config to database after running Craft backup command"
     task :apply do
       on release_roles(fetch(:craft_deploy_roles)) do
-        craft_console "db/backup"
+        craft_console "db/backup --zip"
         craft_console "migrate/all --no-content"
         craft_console "project-config/apply"
         craft_console "migrate"
